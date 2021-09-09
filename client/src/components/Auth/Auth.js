@@ -6,20 +6,42 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { AUTH } from '../../constants/actionTypes';
+import { signin, signup } from '../../actions/auth';
 import Icon from './icon';
 import Input from './Input';
 import useStyles from './styles';
 
+const initialState = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+};
+
 const Auth = () => {
     const classes = useStyles();
-    const [isSignUp, setIsSignUp] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleSubmit = () => {};
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isSignUp) {
+            dispatch(signup(formData, history));
+        } else {
+            dispatch(signin(formData, history));
+        }
+    };
 
-    const handleChange = () => {};
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
 
     const handleShowPassword = () => setShowPassword((prevState) => !prevState);
 
@@ -62,7 +84,7 @@ const Auth = () => {
                                     autoFocus
                                     half
                                 />
-                                <Input name="firstName" label="First Name" handleChange={handleChange} half />
+                                <Input name="lastName" label="Last Name" handleChange={handleChange} half />
                             </>
                         )}
                         <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
@@ -103,7 +125,7 @@ const Auth = () => {
                                 disabled={renderProps.disabled}
                                 startIcon={<Icon />}
                                 variant="contained">
-                                Sign in with Google
+                                {isSignUp ? 'Sign Up with Google' : 'Sign in with Google'}
                             </Button>
                         )}
                         onSuccess={googleSuccess}
