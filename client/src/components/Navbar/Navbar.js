@@ -21,8 +21,7 @@ const Navbar = () => {
     };
 
     useEffect(() => {
-        const token = user?.token;
-        console.log(token);
+        // const token = user?.token;
 
         // JWT ...
 

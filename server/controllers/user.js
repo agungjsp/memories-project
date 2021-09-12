@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import { User } from '../models/user.js';
 
-export const signin = async (res, req) => {
+export const signin = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -27,7 +27,7 @@ export const signin = async (res, req) => {
     }
 };
 
-export const signup = async (res, req) => {
+export const signup = async (req, res) => {
     const { firstName, lastName, email, password, confirmPassword } = req.body;
 
     try {
