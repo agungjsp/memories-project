@@ -54,11 +54,9 @@ const Navbar = () => {
                 message="Session expired. Please sign in again."
                 key={'topright'}
                 action={
-                    <>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
                 }
             />
             <div className={classes.brandContainer}>
