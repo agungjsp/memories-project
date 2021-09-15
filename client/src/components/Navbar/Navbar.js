@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Avatar, Button, Snackbar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch } from 'react-redux';
+import decode from 'jwt-decode';
 
 import { LOGOUT } from '../../constants/actionTypes';
 import memories from '../../images/memories.png';
@@ -9,6 +11,7 @@ import useStyles from './styles';
 
 const Navbar = () => {
     const classes = useStyles();
+    const [toast, setToast] = useState({ open: false });
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const dispatch = useDispatch();
     const history = useHistory();
@@ -20,10 +23,20 @@ const Navbar = () => {
         setUser(null);
     };
 
-    useEffect(() => {
-        // const token = user?.token;
+    const handleClose = () => {
+        setToast({ open: false });
+    };
 
-        // JWT ...
+    useEffect(() => {
+        const token = user?.token;
+
+        if (token) {
+            const decodedToken = decode(token);
+            if (decodedToken.exp * 1000 < new Date().getTime()) {
+                logout();
+                setToast({ open: true });
+            }
+        }
 
         setUser(JSON.parse(localStorage.getItem('profile')));
 
@@ -32,6 +45,22 @@ const Navbar = () => {
 
     return (
         <AppBar className={classes.appBar} position="static">
+            <Snackbar
+                className={classes.snackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                autoHideDuration={3000}
+                open={toast.open}
+                onClose={handleClose}
+                message="Session expired. Please sign in again."
+                key={'topright'}
+                action={
+                    <>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </>
+                }
+            />
             <div className={classes.brandContainer}>
                 <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">
                     Memories
