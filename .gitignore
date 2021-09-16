@@ -13,3 +13,8 @@ bower_components
 psd
 thumb
 sketch
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
