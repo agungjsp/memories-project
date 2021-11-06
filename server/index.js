@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/users.js';
+import rajaOngkirRoutes from './routes/rajaOngkir.js';
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use('/posts', postRoutes);
 app.use('/user', userRoutes);
+app.use('/ongkir', rajaOngkirRoutes);
 
 app.get('/', (req, res) => {
     res.send('Nothing right here');
